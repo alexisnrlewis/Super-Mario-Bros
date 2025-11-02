@@ -39,7 +39,9 @@ func _physics_process(delta):
 	if has_node("Sprite2D"):
 		$Sprite2D.flip_h = direction < 0
 
+# -------------------------------
 # NEW FUNCTION: Check if player hit the side
+# -------------------------------
 func _check_player_collision():
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
