@@ -1,26 +1,19 @@
 extends Node
-class_name ScoreManager # Add this line
-# Add the score manager node to the 'score_manager' group in the editor
 
-var score: int = 0
-var score_label: Label = null
+var current_score: int = 0
+var main_scene_path: String = "res://Scenes/Game.tscn" # Your main level scene
 
-func register_label(label: Label) -> void:
-	score_label = label
-	_update_score_display()
+signal score_changed(new_score: int)
 
-func add_coin(value: int = 1) -> void:
-	score += value
-	_update_score_display()
+func add_score(points: int):
+	current_score += points
+	emit_signal("score_changed", current_score)
 
-func add_enemy(value: int = 5) -> void:
-	score += value
-	_update_score_display()
-
-func reset_score() -> void:
-	score = 0
-	_update_score_display()
-
-func _update_score_display() -> void:
-	if score_label:
-		score_label.text = "Score: %d" % score
+func reset_game():
+	current_score = 0
+	get_tree().paused = false
+	
+	if ResourceLoader.exists(main_scene_path):
+		get_tree().change_scene_to_file(main_scene_path)
+	else:
+		print("ERROR: Main scene path is invalid. Cannot restart game.")
